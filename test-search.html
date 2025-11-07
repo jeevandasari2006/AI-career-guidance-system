@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Search - Load Jobs Database</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a2e;
+      color: #fff;
+    }
+    .btn {
+      padding: 12px 24px;
+      background: #50C9C3;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+    .btn:hover {
+      background: #3da8a3;
+    }
+    .info {
+      background: rgba(80,201,195,0.1);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .success {
+      background: rgba(76,175,80,0.2);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .error {
+      background: rgba(244,67,54,0.2);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔧 Search Database Test & Fix</h1>
+  
+  <div class="info">
+    <h2>Current Status:</h2>
+    <p id="status">Checking...</p>
+  </div>
+
+  <button class="btn" onclick="loadAllJobs()">📥 Load All 60 Jobs Now</button>
+  <button class="btn" onclick="checkDatabase()">🔍 Check Database</button>
+  <button class="btn" onclick="clearDatabase()">🗑️ Clear Database</button>
+  <button class="btn" onclick="window.location.href='dashboard.html'">🏠 Go to Dashboard</button>
+
+  <div id="output"></div>
+
+  <script>
+    function checkDatabase() {
+      const jobs = JSON.parse(localStorage.getItem('jobs_database') || '[]');
+      const output = document.getElementById('output');
+      
+      if(jobs.length === 0) {
+        output.innerHTML = '<div class="error">❌ Database is EMPTY! Click "Load All 60 Jobs Now" button above.</div>';
+      } else {
+        output.innerHTML = `
+          <div class="success">
+            ✅ Database loaded successfully!<br>
+            📊 Total jobs: ${jobs.length}<br><br>
+            <strong>Sample jobs:</strong><br>
+            ${jobs.slice(0, 5).map(j => `• ${j.title} (${j.category})`).join('<br>')}
+          </div>
+        `;
+      }
+    }
+
+    function clearDatabase() {
+      localStorage.removeItem('jobs_database');
+      document.getElementById('output').innerHTML = '<div class="success">✅ Database cleared! Now click "Load All 60 Jobs Now"</div>';
+      updateStatus();
+    }
+
+    function loadAllJobs() {
+      const allJobs = [
+        {title: 'Delivery Partner', salary: '₹12,000 – ₹20,000', desc: 'Deliver food, groceries, or parcels to customers using bike/scooter.', category: '10th Pass', company: 'QuickDeliver Services'},
+        {title: 'Office Assistant', salary: '₹10,000 – ₹18,000', desc: 'Maintain files, assist office staff, handle photocopying, emails, and errands.', category: '10th Pass', company: 'Corporate Office Solutions'},
+        {title: 'Helper / Cleaner', salary: '₹9,000 – ₹15,000', desc: 'Cleaning, organizing materials, and supporting day-to-day office or site maintenance.', category: '10th Pass', company: 'CleanPro Services'},
+        {title: 'Security Guard', salary: '₹10,000 – ₹18,000', desc: 'Protect premises, monitor CCTV, and manage entry points in offices or apartments.', category: '10th Pass', company: 'SecureGuard Services'},
+        {title: 'Warehouse Worker', salary: '₹12,000 – ₹20,000', desc: 'Sorting, packing, loading, and unloading goods in warehouses.', category: '10th Pass', company: 'Logistics Hub Inc.'},
+        {title: 'Store Keeper', salary: '₹15,000 – ₹22,000', desc: 'Maintain inventory records and manage incoming/outgoing goods.', category: '10th Pass', company: 'Inventory Masters Ltd.'},
+        {title: 'Driver', salary: '₹15,000 – ₹30,000', desc: 'Transport goods or passengers safely. Must hold a valid driving license.', category: '10th Pass', company: 'FastTrack Transport'},
+        {title: 'Sales Associate', salary: '₹12,000 – ₹20,000', desc: 'Assist customers in retail stores and manage product sales.', category: '10th Pass', company: 'Retail Store Inc.'},
+        {title: 'Factory Helper', salary: '₹10,000 – ₹17,000', desc: 'Support machine operators and ensure factory cleanliness.', category: '10th Pass', company: 'Manufacturing Co.'},
+        {title: 'Field Worker', salary: '₹12,000 – ₹18,000', desc: 'Outdoor work such as surveys, collections, or basic field support.', category: '10th Pass', company: 'Field Services Ltd.'},
+        {title: 'Customer Care Executive', salary: '₹15,000 – ₹28,000', desc: 'Handle customer calls, solve queries, and record feedback.', category: '12th Pass', company: 'Customer First Inc.'},
+        {title: 'Receptionist', salary: '₹14,000 – ₹25,000', desc: 'Manage front desk, answer calls, and greet clients.', category: '12th Pass', company: 'Professional Services Co.'},
+        {title: 'Computer Operator', salary: '₹15,000 – ₹25,000', desc: 'Operate computer systems, maintain records, and handle MS Office tasks.', category: '12th Pass', company: 'Tech Office Solutions'},
+        {title: 'Data Entry Clerk', salary: '₹12,000 – ₹20,000', desc: 'Enter and manage data into systems accurately.', category: '12th Pass', company: 'DataPro Services'},
+        {title: 'Sales Executive', salary: '₹15,000 – ₹30,000', desc: 'Promote and sell company products to clients or customers.', category: '12th Pass', company: 'Sales Masters Ltd.'},
+        {title: 'Telecaller', salary: '₹12,000 – ₹22,000', desc: 'Make or receive calls to promote services and collect leads.', category: '12th Pass', company: 'CallCenter Pro'},
+        {title: 'Cashier', salary: '₹15,000 – ₹25,000', desc: 'Handle cash counters, billing, and customer payments.', category: '12th Pass', company: 'Retail Chain Inc.'},
+        {title: 'Air Ticketing Executive', salary: '₹18,000 – ₹35,000', desc: 'Book flight tickets, assist travelers, and manage travel queries.', category: '12th Pass', company: 'Travel Solutions'},
+        {title: 'Travel Agent', salary: '₹18,000 – ₹30,000', desc: 'Create travel packages, manage bookings, and assist customers.', category: '12th Pass', company: 'Tour & Travels Co.'},
+        {title: 'Police / Army (Constable)', salary: '₹25,000 – ₹40,000', desc: 'Maintain law and order, public safety, and discipline.', category: '12th Pass', company: 'Government of India'},
+        {title: 'Electrician', salary: '₹15,000 – ₹30,000', desc: 'Install and maintain electrical systems and equipment.', category: 'ITI/Diploma', company: 'ElectroTech Services'},
+        {title: 'Fitter', salary: '₹14,000 – ₹28,000', desc: 'Assemble and repair machinery and mechanical parts.', category: 'ITI/Diploma', company: 'Mechanical Works'},
+        {title: 'Welder', salary: '₹14,000 – ₹25,000', desc: 'Join metal parts using welding equipment.', category: 'ITI/Diploma', company: 'Welding Solutions'},
+        {title: 'Plumber', salary: '₹15,000 – ₹25,000', desc: 'Install and repair water supply and drainage systems.', category: 'ITI/Diploma', company: 'Plumbing Services'},
+        {title: 'Mechanic (Auto / AC / Diesel)', salary: '₹18,000 – ₹30,000', desc: 'Diagnose and repair vehicles or machinery.', category: 'ITI/Diploma', company: 'AutoCare Workshop'},
+        {title: 'Technician (Electrical / Mechanical)', salary: '₹18,000 – ₹35,000', desc: 'Maintain and repair technical equipment and systems.', category: 'ITI/Diploma', company: 'TechFix Solutions'},
+        {title: 'Machine Operator', salary: '₹15,000 – ₹30,000', desc: 'Operate and monitor industrial machines.', category: 'ITI/Diploma', company: 'Industrial Corp.'},
+        {title: 'Quality Inspector', salary: '₹18,000 – ₹35,000', desc: 'Check product quality and ensure standards.', category: 'ITI/Diploma', company: 'Quality Assurance Labs'},
+        {title: 'Draftsman', salary: '₹20,000 – ₹40,000', desc: 'Prepare technical drawings using CAD software.', category: 'ITI/Diploma', company: 'Engineering Design Co.'},
+        {title: 'Site Supervisor', salary: '₹18,000 – ₹35,000', desc: 'Oversee on-site construction and labor activities.', category: 'ITI/Diploma', company: 'Construction Corp.'},
+        {title: 'Accountant', salary: '₹20,000 – ₹40,000', desc: 'Manage company accounts, GST, and daily transactions.', category: 'Graduation', company: 'Finance Pros Inc.'},
+        {title: 'HR Executive', salary: '₹22,000 – ₹45,000', desc: 'Handle recruitment, payroll, and employee relations.', category: 'Graduation', company: 'Talent Solutions Group'},
+        {title: 'Marketing Executive', salary: '₹25,000 – ₹50,000', desc: 'Execute marketing campaigns and analyze results.', category: 'Graduation', company: 'Marketing Hub'},
+        {title: 'Business Development Associate', salary: '₹25,000 – ₹60,000', desc: 'Find business leads and convert clients.', category: 'Graduation', company: 'Growth Partners Inc.'},
+        {title: 'Customer Relationship Manager', salary: '₹25,000 – ₹50,000', desc: 'Maintain long-term relationships with clients.', category: 'Graduation', company: 'Client Solutions'},
+        {title: 'Data Analyst', salary: '₹30,000 – ₹60,000', desc: 'Analyze business data and prepare reports.', category: 'Graduation', company: 'Analytics Corp.'},
+        {title: 'Graphic Designer', salary: '₹25,000 – ₹50,000', desc: 'Design visual content using tools like Photoshop or Canva.', category: 'Graduation', company: 'Design Pro Agency'},
+        {title: 'Content Writer', salary: '₹20,000 – ₹45,000', desc: 'Write blogs, articles, and marketing content.', category: 'Graduation', company: 'Content Creators Agency'},
+        {title: 'Social Media Manager', salary: '₹25,000 – ₹60,000', desc: 'Manage brand presence on Instagram, LinkedIn, etc.', category: 'Graduation', company: 'Social Buzz Agency'},
+        {title: 'Government Clerk / Assistant', salary: '₹30,000 – ₹45,000', desc: 'Manage records and paperwork in government offices.', category: 'Graduation', company: 'Government Office'},
+        {title: 'Software Developer', salary: '₹40,000 – ₹1,00,000+', desc: 'Develop and maintain software applications.', category: 'Professional Degree', company: 'Tech Solutions Inc.'},
+        {title: 'Web / App Developer', salary: '₹35,000 – ₹90,000', desc: 'Build and update websites and mobile applications.', category: 'Professional Degree', company: 'Digital Agency Co.'},
+        {title: 'Data Scientist', salary: '₹50,000 – ₹1,50,000+', desc: 'Analyze data using AI/ML tools for business insights.', category: 'Professional Degree', company: 'Data Insights LLC'},
+        {title: 'Cloud Engineer', salary: '₹45,000 – ₹1,20,000', desc: 'Manage cloud systems like AWS, Azure, or GCP.', category: 'Professional Degree', company: 'CloudTech Solutions'},
+        {title: 'Cybersecurity Analyst', salary: '₹40,000 – ₹1,10,000', desc: 'Protect systems from security breaches and malware.', category: 'Professional Degree', company: 'SecureNet Technologies'},
+        {title: 'Mechanical / Civil / Electrical Engineer', salary: '₹30,000 – ₹80,000', desc: 'Design, build, and manage engineering projects.', category: 'Professional Degree', company: 'Engineering Solutions'},
+        {title: 'Architect', salary: '₹40,000 – ₹90,000', desc: 'Design residential and commercial building structures.', category: 'Professional Degree', company: 'Architecture Firm'},
+        {title: 'Doctor', salary: '₹60,000 – ₹2,00,000+', desc: 'Provide medical diagnosis and treatment.', category: 'Professional Degree', company: 'Hospital / Clinic'},
+        {title: 'Chartered Accountant', salary: '₹50,000 – ₹1,50,000+', desc: 'Manage auditing, taxation, and financial records.', category: 'Professional Degree', company: 'CA Firm'},
+        {title: 'Product / Project Manager', salary: '₹60,000 – ₹2,00,000+', desc: 'Plan, execute, and manage product or project development.', category: 'Professional Degree', company: 'Product Excellence Inc.'},
+        {title: 'Video Editor', salary: '₹20,000 – ₹60,000', desc: 'Edit and produce videos for social media or films.', category: 'Creative & Freelance', company: 'Creative Studios'},
+        {title: 'Photographer', salary: '₹15,000 – ₹50,000', desc: 'Capture and edit professional photos.', category: 'Creative & Freelance', company: 'Picture Perfect Studios'},
+        {title: 'Animator', salary: '₹25,000 – ₹70,000', desc: 'Create animated graphics and motion visuals.', category: 'Creative & Freelance', company: 'Animation Works'},
+        {title: 'Game Designer', salary: '₹30,000 – ₹90,000', desc: 'Design gameplay, levels, and game art.', category: 'Creative & Freelance', company: 'Game Studio'},
+        {title: 'Fashion Designer', salary: '₹25,000 – ₹70,000', desc: 'Create and design apparel and accessories.', category: 'Creative & Freelance', company: 'Fashion House'},
+        {title: 'Interior Designer', salary: '₹30,000 – ₹80,000', desc: 'Design and decorate residential and commercial interiors.', category: 'Creative & Freelance', company: 'Interior Concepts'},
+        {title: 'Blogger / Influencer', salary: '₹15,000 – ₹1,00,000+', desc: 'Create online content and earn through brand deals.', category: 'Creative & Freelance', company: 'Content Creators Network'},
+        {title: 'YouTuber', salary: '₹10,000 – ₹1,00,000+', desc: 'Create and upload engaging video content.', category: 'Creative & Freelance', company: 'YouTube Platform'},
+        {title: 'Music Producer', salary: '₹25,000 – ₹80,000', desc: 'Compose, record, and mix songs or soundtracks.', category: 'Creative & Freelance', company: 'Music Studios'},
+        {title: 'Freelancer (Any Field)', salary: '₹15,000 – ₹1,00,000+', desc: 'Offer skills online such as writing, design, coding, etc.', category: 'Creative & Freelance', company: 'Independent Professional'}
+      ];
+
+      localStorage.setItem('jobs_database', JSON.stringify(allJobs));
+      document.getElementById('output').innerHTML = `
+        <div class="success">
+          ✅ SUCCESS! Loaded ${allJobs.length} jobs into database!<br><br>
+          Now go to Dashboard and try searching for:<br>
+          • "10th" - will show 10 jobs<br>
+          • "software" - will show Software Developer<br>
+          • "driver" - will show Driver job
+        </div>
+      `;
+      updateStatus();
+    }
+
+    function updateStatus() {
+      const jobs = JSON.parse(localStorage.getItem('jobs_database') || '[]');
+      const statusEl = document.getElementById('status');
+      
+      if(jobs.length === 0) {
+        statusEl.innerHTML = '❌ <strong>Database is EMPTY</strong> - Search will not work!';
+        statusEl.style.color = '#f44336';
+      } else {
+        statusEl.innerHTML = `✅ <strong>Database loaded!</strong> Contains ${jobs.length} jobs`;
+        statusEl.style.color = '#4caf50';
+      }
+    }
+
+    // Check on page load
+    updateStatus();
+    checkDatabase();
+  </script>
+</body>
+</html>

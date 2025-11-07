@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — AI Career Guidance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="translations.js"></script>
+  <script>
+    // Check if user is logged in - redirect to signin if not
+    window.addEventListener('DOMContentLoaded', function() {
+      const isLoggedIn = localStorage.getItem('is_logged_in');
+      const userAccount = localStorage.getItem('user_account');
+      
+      if(!isLoggedIn || !userAccount) {
+        // Not logged in - redirect to signin page
+        window.location.href = 'signin.html';
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <div class="logo">👤</div>
+        <div>
+          <div class="brand-title small" id="welcomeMessage">Welcome back!</div>
+          <div class="muted tiny" id="userEmail"></div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="search-jobs" style="position:relative;">
+          <input type="text" id="jobSearchInput" placeholder="🔍 Search for jobs..." class="search-input" onkeyup="searchJobs(event)" onfocus="showSearchHelp()" />
+          <div id="searchResults" style="display:none; position:absolute; top:100%; left:0; right:0; background:var(--card-bg); border:1px solid var(--glass-border); border-radius:12px; margin-top:8px; max-height:400px; overflow-y:auto; z-index:1000; box-shadow:0 8px 24px rgba(0,0,0,0.3);"></div>
+        </div>
+        <a href="settings.html" class="btn ghost" style="padding:8px 16px;">👤 Profile</a>
+        <div class="notification-bell" onclick="toggleNotifications()">
+          🔔
+          <span class="notification-badge" id="notificationBadge" style="display:none;">0</span>
+          <div id="notificationDropdown" class="notification-dropdown">
+            <div class="notification-header" data-translate="appliedJobs">Applied Jobs</div>
+            <div class="notification-list" id="notificationList">
+              <div class="notification-empty" data-translate="noApplications">No applications yet</div>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button id="settingsToggle" class="btn ghost dropdown-toggle" onclick="toggleDropdown()">
+            ⚙️ <span data-translate="settings">Settings</span>
+          </button>
+          <div id="settingsDropdown" class="dropdown-menu">
+            <a class="dropdown-item" onclick="document.documentElement.classList.toggle('light'); localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');">
+              <span class="dropdown-icon">☀️</span>
+              <span data-translate="lightMode">Light Mode</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" onclick="signOut()" style="cursor:pointer;">
+              <span class="dropdown-icon">↪</span>
+              <span data-translate="signOut">Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <section class="quick-actions">
+        <h2>Your Quick Actions</h2>
+        <div class="cards-grid">
+          <div class="card glass big" onclick="window.location.href='chat.html'" style="cursor:pointer;">
+            <div class="ficon">💬</div>
+            <h3>AI Career Mentor</h3>
+            <p class="muted">Chat with our AI for personalized career guidance</p>
+          </div>
+
+          <div class="card glass big" onclick="window.location.href='upload.html'" style="cursor:pointer;">
+            <div class="ficon">📄</div>
+            <h3>Upload Resume</h3>
+            <p class="muted">Get AI-powered analysis of your resume</p>
+          </div>
+
+          <div class="card glass big" onclick="window.location.href='applications.html'" style="cursor:pointer;">
+            <div class="ficon">📋</div>
+            <h3>My Applications</h3>
+            <p class="muted">View and search your submitted applications</p>
+          </div>
+
+          <div class="card glass big" onclick="generateRecommendations()" style="cursor:pointer;">
+            <div class="ficon">📊</div>
+            <h3>Generate Recommendations</h3>
+            <p class="muted">Get AI career recommendations based on your profile</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="recommendations" id="recommendationsSection">
+        <h2>Your Career Recommendations</h2>
+        <div class="cards-grid three">
+          <div class="card glass job">
+            <div class="job-head">
+              <div class="ficon small">🧳</div>
+              <div class="score">70%</div>
+            </div>
+            <h3>Food Service Assistant</h3>
+            <p class="muted">A food service assistant helps prepare and serve food, maintain cleanliness, and provide customer service in restaurants, cafes, or institutional settings.</p>
+            <div class="tags">
+              <span class="tag">Hygiene and sanitation</span>
+              <span class="tag">Customer service</span>
+              <span class="tag">Teamwork</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn apply-btn" data-job-title="Food Service Assistant" data-company="Restaurant Co.">Apply for Job</button>
+            </div>
+          </div>
+
+          <div class="card glass job">
+            <div class="job-head">
+              <div class="ficon small">🧳</div>
+              <div class="score">70%</div>
+            </div>
+            <h3>General Laborer</h3>
+            <p class="muted">A general laborer performs a variety of physical tasks on construction sites, in warehouses, or for landscaping companies.</p>
+            <div class="tags">
+              <span class="tag">Physical stamina</span>
+              <span class="tag">Reliability</span>
+              <span class="tag">Basic tools</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn apply-btn" data-job-title="General Laborer" data-company="Construction Corp.">Apply for Job</button>
+            </div>
+          </div>
+
+          <div class="card glass job">
+            <div class="job-head">
+              <div class="ficon small">🧳</div>
+              <div class="score">72%</div>
+            </div>
+            <h3>Retail Sales Associate</h3>
+            <p class="muted">Assist customers with purchases, maintain store appearance, and handle transactions in retail environments.</p>
+            <div class="tags">
+              <span class="tag">Customer service</span>
+              <span class="tag">Sales</span>
+              <span class="tag">Cash handling</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn apply-btn" data-job-title="Retail Sales Associate" data-company="Retail Store Inc.">Apply for Job</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer muted container">
+      <small>Built with ❤️ </small>
+    </footer>
+  </div>
+
+  <!-- Job Application Modal -->
+  <div id="applicationModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" data-translate="applyForJobTitle">Apply for Job</h2>
+        <button class="modal-close" onclick="closeApplicationModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="applicationForm" onsubmit="event.preventDefault(); submitApplication()">
+          <input type="hidden" id="jobTitle" />
+          <input type="hidden" id="jobCompany" />
+          
+          <div class="form-group">
+            <label data-translate="fullNameRequired">Full Name *</label>
+            <input type="text" id="applicantName" data-translate-placeholder="enterFullName" placeholder="Enter your full name" required />
+          </div>
+          
+          <div class="form-group">
+            <label data-translate="emailRequired">Email Address *</label>
+            <input type="email" id="applicantEmail" data-translate-placeholder="enterEmail" placeholder="your.email@example.com" required />
+          </div>
+          
+          <div class="form-group">
+            <label data-translate="phoneNumber">Phone Number *</label>
+            <input type="tel" id="applicantPhone" data-translate-placeholder="enterPhone" placeholder="+91 98765 43210" required />
+          </div>
+          
+          <div class="form-group">
+            <label data-translate="resumeCV">Resume/CV (Optional)</label>
+            <div class="file-upload-wrapper">
+              <input type="file" id="resumeUpload" class="file-upload-input" accept=".pdf,.doc,.docx" onchange="updateFileName(this)" />
+              <label for="resumeUpload" class="file-upload-label" data-translate="clickToUploadResume">
+                📄 Click to upload resume (PDF, DOC, DOCX)
+              </label>
+              <div class="file-name" id="fileName"></div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label data-translate="keySkills">Key Skills *</label>
+            <input type="text" id="applicantSkills" data-translate-placeholder="enterSkills" placeholder="e.g., JavaScript, Communication" required />
+          </div>
+          
+          <div class="form-group">
+            <label data-translate="yearsExp">Years of Experience *</label>
+            <input type="number" id="applicantExperience" data-translate-placeholder="enterYears" placeholder="0" min="0" required />
+          </div>
+          
+          <div class="form-group">
+            <label data-translate="coverLetter">Cover Letter *</label>
+            <textarea id="coverLetterText" data-translate-placeholder="tellUsWhy" placeholder="Tell us why you are a great fit..." required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="closeApplicationModal()" data-translate="cancel">Cancel</button>
+        <button class="btn apply-btn" onclick="submitApplication()" data-translate="submitApplication">Submit Application</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Settings — AI Career Guidance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="translations.js"></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <a class="back" href="dashboard.html">← Back to Dashboard</a>
+      </div>
+      <div class="nav-actions">
+        <div class="dropdown">
+          <button id="settingsToggle" class="btn ghost dropdown-toggle" onclick="toggleDropdown()">
+            ⚙️ Settings
+          </button>
+          <div id="settingsDropdown" class="dropdown-menu">
+            <a class="dropdown-item" onclick="document.documentElement.classList.toggle('light'); localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');">
+              <span class="dropdown-icon">☀️</span>
+              Light Mode
+            </a>
+            <a class="dropdown-item" href="settings.html">
+              <span class="dropdown-icon">👤</span>
+              Profile
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="index.html">
+              <span class="dropdown-icon">↪</span>
+              Sign Out
+            </a>
+          </div>
+        </div>
+        <a class="btn" href="dashboard.html">Close</a>
+      </div>
+    </nav>
+
+    <main class="container center">
+      <div class="card glass settings-card">
+        <h2>Profile Settings</h2>
+        
+        <!-- Account Information Section -->
+        <div style="background:rgba(80,201,195,0.1); padding:16px; border-radius:12px; margin-bottom:24px; border:1px solid rgba(80,201,195,0.3);">
+          <h3 style="margin:0 0 12px 0; color:var(--accent); font-size:1.1rem;">🔒 Account Information</h3>
+          <div style="display:grid; gap:12px;">
+            <div>
+              <div style="font-size:0.85rem; color:var(--muted); margin-bottom:4px;">Email</div>
+              <div id="accountEmail" style="font-weight:600; color:var(--text);">Not set</div>
+            </div>
+            <div>
+              <div style="font-size:0.85rem; color:var(--muted); margin-bottom:4px;">Password</div>
+              <div style="font-weight:600; color:var(--text);">••••••••</div>
+            </div>
+            <button type="button" class="btn secondary" onclick="showChangePasswordModal()" style="width:fit-content; font-size:0.9rem;">🔑 Change Password</button>
+          </div>
+        </div>
+        
+        <!-- Profile Picture Section -->
+        <div style="text-align:center; margin-bottom:24px;">
+          <div id="profilePicturePreview" style="width:120px; height:120px; border-radius:50%; margin:0 auto 16px; background:rgba(80,201,195,0.1); border:3px solid var(--accent); display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative;">
+            <span id="profileInitial" style="font-size:48px; color:var(--accent); font-weight:600;">👤</span>
+            <img id="profileImg" style="width:100%; height:100%; object-fit:cover; display:none;" />
+          </div>
+          <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="handleProfilePicture(this)" />
+          <button type="button" class="btn secondary" onclick="document.getElementById('profilePicInput').click()" style="font-size:0.9rem;">📷 Upload Profile Picture</button>
+          <div id="profilePicName" style="margin-top:8px; font-size:0.85rem; color:var(--muted);"></div>
+        </div>
+        
+        <form id="settingsForm" onsubmit="event.preventDefault(); saveSettings()">
+          <label class="label">Full Name</label>
+          <input id="nameInput" type="text" placeholder="jeevan" />
+
+          <label class="label">Age</label>
+          <input id="ageInput" type="number" placeholder="Age" />
+
+          <label class="label">Education Level</label>
+          <select id="eduSelect">
+            <option value="">Select education level</option>
+            <option>Bachelor's</option>
+            <option>Master's</option>
+            <option>Diploma</option>
+            <option>High School</option>
+          </select>
+
+          <label class="label">Skills (comma-separated)</label>
+          <input id="skillsInput" type="text" placeholder="e.g., JavaScript, Python, Communication" />
+
+          <label class="label">Career Interests (comma-separated)</label>
+          <input id="interestsInput" type="text" placeholder="e.g., Software, Data Science, Marketing" />
+
+          <div class="form-actions">
+            <button class="btn primary" type="submit">Save Changes</button>
+            <a class="muted small" href="dashboard.html" style="margin-left:12px">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Change Password Modal -->
+    <div id="passwordModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">🔑 Change Password</h2>
+          <button class="modal-close" onclick="closePasswordModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <form id="passwordForm" onsubmit="event.preventDefault(); changePassword()">
+            <div class="form-group">
+              <label>Current Password *</label>
+              <input type="password" id="currentPassword" placeholder="Enter current password" required />
+            </div>
+            
+            <div class="form-group">
+              <label>New Password *</label>
+              <input type="password" id="newPassword" placeholder="Enter new password" required minlength="6" />
+            </div>
+            
+            <div class="form-group">
+              <label>Confirm New Password *</label>
+              <input type="password" id="confirmPassword" placeholder="Confirm new password" required />
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn ghost" onclick="closePasswordModal()">Cancel</button>
+              <button type="submit" class="btn primary">Update Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      // Load and display account email
+      window.addEventListener('DOMContentLoaded', function() {
+        const userAccount = JSON.parse(localStorage.getItem('user_account') || '{}');
+        const accountEmailEl = document.getElementById('accountEmail');
+        if(accountEmailEl && userAccount.email) {
+          accountEmailEl.textContent = userAccount.email;
+        }
+      });
+      
+      function showChangePasswordModal() {
+        const modal = document.getElementById('passwordModal');
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closePasswordModal() {
+        const modal = document.getElementById('passwordModal');
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+        document.getElementById('passwordForm').reset();
+      }
+      
+      function changePassword() {
+        const currentPwd = document.getElementById('currentPassword').value;
+        const newPwd = document.getElementById('newPassword').value;
+        const confirmPwd = document.getElementById('confirmPassword').value;
+        
+        // Get stored user account
+        const userAccount = JSON.parse(localStorage.getItem('user_account') || '{}');
+        
+        // Verify current password
+        if(currentPwd !== userAccount.password) {
+          alert('❌ Current password is incorrect!');
+          return;
+        }
+        
+        // Verify new password match
+        if(newPwd !== confirmPwd) {
+          alert('❌ New passwords do not match!');
+          return;
+        }
+        
+        // Verify password length
+        if(newPwd.length < 6) {
+          alert('❌ Password must be at least 6 characters long!');
+          return;
+        }
+        
+        // Update password
+        userAccount.password = newPwd;
+        userAccount.updatedAt = new Date().toISOString();
+        localStorage.setItem('user_account', JSON.stringify(userAccount));
+        
+        // Show success and close modal
+        alert('✅ Password changed successfully!');
+        closePasswordModal();
+      }
+      
+      // Close modal when clicking outside
+      document.addEventListener('click', (event) => {
+        if(event.target.classList.contains('modal-overlay')) {
+          closePasswordModal();
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>

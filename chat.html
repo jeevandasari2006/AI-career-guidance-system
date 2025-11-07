@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Mentor — Chat</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="translations.js"></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <a class="back" href="dashboard.html">← Back to Dashboard</a>
+      </div>
+      <div class="nav-actions">
+        <div class="dropdown">
+          <button id="settingsToggle" class="btn ghost dropdown-toggle" onclick="toggleDropdown()">
+            ⚙️ Settings
+          </button>
+          <div id="settingsDropdown" class="dropdown-menu">
+            <a class="dropdown-item" onclick="document.documentElement.classList.toggle('light'); localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');">
+              <span class="dropdown-icon">☀️</span>
+              Light Mode
+            </a>
+            <a class="dropdown-item" href="settings.html">
+              <span class="dropdown-icon">👤</span>
+              Profile
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="index.html">
+              <span class="dropdown-icon">↪</span>
+              Sign Out
+            </a>
+          </div>
+        </div>
+        <a class="btn" href="dashboard.html">Close</a>
+      </div>
+    </nav>
+
+    <main class="container chat-page">
+      <h2 class="center-title">🤖 Your Career AI Assistant</h2>
+
+      <div class="chat-area glass">
+        <div id="chatLog" class="chat-log">
+          <div class="message ai">Hey there! 👋 I'm your personal career buddy! I'm here to help you explore career paths, answer questions, and guide you toward your dream job. What's on your mind today?</div>
+        </div>
+      </div>
+
+      <div class="chat-compose">
+        <input id="chatInput" type="text" placeholder="Type your question here... I'm all ears! 😊" onkeypress="if(event.key==='Enter') sendMessage()" />
+        <button id="sendBtn" class="btn primary" onclick="sendMessage()">Send</button>
+        <input id="fileInput" type="file" style="display:none" />
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </div>
+</body>
+</html>

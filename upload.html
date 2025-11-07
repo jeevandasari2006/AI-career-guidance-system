@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume Upload — AI Career Guidance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="translations.js"></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <a class="back" href="dashboard.html" data-translate="backToDashboard">← Back to Dashboard</a>
+      </div>
+      <div class="nav-actions">
+        <div class="dropdown">
+          <button id="settingsToggle" class="btn ghost dropdown-toggle" onclick="toggleDropdown()">
+            ⚙️ <span data-translate="settings">Settings</span>
+          </button>
+          <div id="settingsDropdown" class="dropdown-menu">
+            <a class="dropdown-item" onclick="document.documentElement.classList.toggle('light'); localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');">
+              <span class="dropdown-icon">☀️</span>
+              <span data-translate="lightMode">Light Mode</span>
+            </a>
+            <a class="dropdown-item" href="settings.html">
+              <span class="dropdown-icon">👤</span>
+              <span data-translate="profile">Profile</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="index.html">
+              <span class="dropdown-icon">↪</span>
+              <span data-translate="signOut">Sign Out</span>
+            </a>
+          </div>
+        </div>
+        <a class="btn" href="dashboard.html" data-translate="close">Close</a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="card glass upload-card">
+        <h2 data-translate="resumeUploadTitle">Resume Upload</h2>
+        <p class="muted" data-translate="resumeUploadDesc">Get AI-powered analysis and career recommendations</p>
+        
+        <!-- AI Models Info Badge -->
+        <div style="background:rgba(80,201,195,0.1); padding:12px 16px; border-radius:10px; margin:16px 0; border:1px solid rgba(80,201,195,0.3);">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div style="color:#50C9C3; font-weight:600; font-size:0.95rem;">🧠 Powered by Advanced CNN Models:</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span style="background:rgba(74,144,226,0.2); padding:4px 12px; border-radius:16px; font-size:0.8rem; color:var(--text); font-weight:500;">ResNet-50</span>
+              <span style="background:rgba(80,201,195,0.2); padding:4px 12px; border-radius:16px; font-size:0.8rem; color:var(--text); font-weight:500;">EfficientNet-B3</span>
+              <span style="background:rgba(156,39,176,0.2); padding:4px 12px; border-radius:16px; font-size:0.8rem; color:var(--text); font-weight:500;">Inception-v3</span>
+              <span style="background:rgba(255,193,7,0.2); padding:4px 12px; border-radius:16px; font-size:0.8rem; color:var(--text); font-weight:500;">VGG-16</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-center">
+          <div class="file-upload-wrapper">
+            <input id="resumeFile" type="file" accept=".pdf,.doc,.docx" class="file-upload-input" onchange="handleResumeUpload(this)" />
+            <label for="resumeFile" class="file-upload-label" data-translate="clickToUpload">
+              📄 Click to upload resume (PDF, DOC, DOCX)
+            </label>
+          </div>
+          <div id="uploadedFileName" class="file-name" style="margin-top:12px; font-size:0.95rem;"></div>
+          <div id="uploadNote" class="muted tiny" style="margin-top:8px" data-translate="supportedFormats">Supported formats: PDF, DOC, DOCX (Max 5MB)</div>
+          <div id="uploadResult" style="margin-top:12px; font-size:0.95rem;"></div>
+        </div>
+
+        <div style="margin-top:24px">
+          <button class="btn apply-btn" onclick="analyzeResume()" id="analyzeBtn" disabled><span data-translate="analyzeResume">🔍 Analyze Resume</span></button>
+          <a class="muted small" href="dashboard.html" style="margin-left:12px" data-translate="backToDashboard">Back to Dashboard</a>
+        </div>
+        
+        <!-- Job Recommendations Section -->
+        <div id="jobRecommendations" style="margin-top:32px; display:none;">
+          <h3 style="margin-bottom:16px; color:var(--accent);" data-translate="recommendedJobs">🎯 Recommended Jobs Based on Your Resume</h3>
+          <div class="cards-grid" id="recommendedJobsGrid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Job Application Modal -->
+    <div id="applicationModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" data-translate="applyForJobTitle">Apply for Job</h2>
+          <button class="modal-close" onclick="closeApplicationModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <form id="applicationForm" onsubmit="event.preventDefault(); submitApplication()">
+            <input type="hidden" id="jobTitle" />
+            <input type="hidden" id="jobCompany" />
+            
+            <div class="form-group">
+              <label data-translate="fullNameRequired">Full Name *</label>
+              <input type="text" id="applicantName" data-translate-placeholder="enterFullName" placeholder="Enter your full name" required />
+            </div>
+            
+            <div class="form-group">
+              <label data-translate="emailRequired">Email Address *</label>
+              <input type="email" id="applicantEmail" data-translate-placeholder="enterEmail" placeholder="your.email@example.com" required />
+            </div>
+            
+            <div class="form-group">
+              <label data-translate="phoneNumber">Phone Number *</label>
+              <input type="tel" id="applicantPhone" data-translate-placeholder="enterPhone" placeholder="+91 98765 43210" required />
+            </div>
+            
+            <div class="form-group">
+              <label data-translate="resumeCV">Resume/CV (Optional)</label>
+              <div class="file-upload-wrapper">
+                <input type="file" id="resumeUpload" class="file-upload-input" accept=".pdf,.doc,.docx" onchange="updateFileName(this)" />
+                <label for="resumeUpload" class="file-upload-label" data-translate="clickToUploadResume">
+                  📄 Click to upload resume (PDF, DOC, DOCX)
+                </label>
+                <div class="file-name" id="fileName"></div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label data-translate="keySkills">Key Skills *</label>
+              <input type="text" id="applicantSkills" data-translate-placeholder="enterSkills" placeholder="e.g., JavaScript, Communication" required />
+            </div>
+            
+            <div class="form-group">
+              <label data-translate="yearsExp">Years of Experience *</label>
+              <input type="number" id="applicantExperience" data-translate-placeholder="enterYears" placeholder="0" min="0" required />
+            </div>
+            
+            <div class="form-group">
+              <label data-translate="coverLetter">Cover Letter *</label>
+              <textarea id="coverLetterText" data-translate-placeholder="tellUsWhy" placeholder="Tell us why you are a great fit..." required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn secondary" onclick="closeApplicationModal()" data-translate="cancel">Cancel</button>
+          <button class="btn apply-btn" onclick="submitApplication()" data-translate="submitApplication">Submit Application</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </div>
+</body>
+</html>

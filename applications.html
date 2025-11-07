@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Applications — AI Career Guidance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="translations.js"></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <a class="back" href="dashboard.html">← Back to Dashboard</a>
+      </div>
+      <div class="nav-actions">
+        <a href="settings.html" class="btn ghost" style="padding:8px 16px;">👤 Profile</a>
+        <a class="btn" href="dashboard.html">Close</a>
+      </div>
+    </nav>
+
+    <main class="container" style="max-width:1200px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:32px;">
+        <h1 style="font-size:2.5rem; margin-bottom:12px; font-weight:700;">📋 My Job Applications</h1>
+        <p class="muted" style="font-size:1.1rem;">View and search through your submitted applications</p>
+      </div>
+
+      <!-- Search Bar -->
+      <div style="margin-bottom:32px;">
+        <div class="search-jobs" style="max-width:600px; margin:0 auto;">
+          <input type="text" id="searchInput" placeholder="🔍 Search by job title, company, or qualification..." class="search-input" style="width:100%; padding:16px; font-size:1rem;" onkeyup="searchApplications()" />
+        </div>
+      </div>
+
+      <!-- Applications Summary -->
+      <div style="background:rgba(80,201,195,0.1); padding:20px; border-radius:12px; margin-bottom:32px; text-align:center; border:1px solid rgba(80,201,195,0.3);">
+        <h3 style="color:#50C9C3; margin-bottom:8px;">Total Applications</h3>
+        <div style="font-size:2.5rem; font-weight:700; color:var(--accent);" id="totalApps">0</div>
+      </div>
+
+      <!-- Applications List -->
+      <div id="applicationsList">
+        <div style="text-align:center; padding:40px; color:var(--muted);">
+          <div style="font-size:3rem; margin-bottom:16px;">📭</div>
+          <div>No applications yet. Start applying for jobs!</div>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+      // Load and display applications
+      function loadApplications() {
+        const applications = JSON.parse(localStorage.getItem('job_applications') || '[]');
+        const totalEl = document.getElementById('totalApps');
+        const listEl = document.getElementById('applicationsList');
+        
+        totalEl.textContent = applications.length;
+        
+        if(applications.length === 0) {
+          listEl.innerHTML = `
+            <div style="text-align:center; padding:40px; color:var(--muted);">
+              <div style="font-size:3rem; margin-bottom:16px;">📭</div>
+              <div>No applications yet. Start applying for jobs!</div>
+            </div>
+          `;
+          return;
+        }
+        
+        displayApplications(applications);
+      }
+      
+      function displayApplications(apps) {
+        const listEl = document.getElementById('applicationsList');
+        
+        if(apps.length === 0) {
+          listEl.innerHTML = `
+            <div style="text-align:center; padding:40px; color:var(--muted);">
+              <div style="font-size:3rem; margin-bottom:16px;">🔍</div>
+              <div>No applications match your search</div>
+            </div>
+          `;
+          return;
+        }
+        
+        listEl.innerHTML = apps.reverse().map((app, index) => {
+          const date = new Date(app.appliedDate);
+          const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          
+          return `
+            <div class="card glass" style="margin-bottom:20px; padding:24px;">
+              <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:16px;">
+                <div>
+                  <h3 style="color:#50C9C3; margin-bottom:4px;">${app.jobTitle || app.jobRole}</h3>
+                  <div style="color:var(--muted); font-size:0.9rem;">
+                    ${app.company ? `🏢 ${app.company}` : ''}
+                    ${app.salary ? ` • ${app.salary}` : ''}
+                  </div>
+                </div>
+                <div style="background:rgba(80,201,195,0.2); padding:8px 16px; border-radius:20px; font-size:0.85rem; color:#50C9C3; font-weight:600;">
+                  ${app.status || 'Submitted'}
+                </div>
+              </div>
+              
+              <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-bottom:16px; padding:16px; background:rgba(255,255,255,0.03); border-radius:8px;">
+                <div>
+                  <div style="color:var(--muted); font-size:0.85rem; margin-bottom:4px;">👤 Applicant Name</div>
+                  <div style="font-weight:500;">${app.name || app.fullName}</div>
+                </div>
+                <div>
+                  <div style="color:var(--muted); font-size:0.85rem; margin-bottom:4px;">📧 Email</div>
+                  <div style="font-weight:500;">${app.email}</div>
+                </div>
+                <div>
+                  <div style="color:var(--muted); font-size:0.85rem; margin-bottom:4px;">🎓 Qualification</div>
+                  <div style="font-weight:500;">${app.qualification || 'Not specified'}</div>
+                </div>
+                <div>
+                  <div style="color:var(--muted); font-size:0.85rem; margin-bottom:4px;">📞 Phone</div>
+                  <div style="font-weight:500;">${app.phone || 'Not provided'}</div>
+                </div>
+              </div>
+              
+              ${app.skills ? `
+              <div style="margin-bottom:16px;">
+                <div style="color:var(--muted); font-size:0.85rem; margin-bottom:8px;">🛠️ Skills</div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  ${app.skills.split(',').map(skill => 
+                    `<span style="background:rgba(74,144,226,0.2); padding:6px 12px; border-radius:20px; font-size:0.85rem;">${skill.trim()}</span>`
+                  ).join('')}
+                </div>
+              </div>
+              ` : ''}
+              
+              ${app.experience ? `
+              <div style="margin-bottom:16px;">
+                <div style="color:var(--muted); font-size:0.85rem; margin-bottom:4px;">💼 Experience</div>
+                <div>${app.experience} years</div>
+              </div>
+              ` : ''}
+              
+              ${app.coverLetter ? `
+              <div style="margin-bottom:16px;">
+                <div style="color:var(--muted); font-size:0.85rem; margin-bottom:8px;">📝 Cover Letter</div>
+                <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; line-height:1.6; font-size:0.9rem;">
+                  ${app.coverLetter}
+                </div>
+              </div>
+              ` : ''}
+              
+              ${app.resume || app.resumeFile ? `
+              <div style="margin-bottom:16px;">
+                <div style="color:var(--muted); font-size:0.85rem; margin-bottom:4px;">📄 Resume</div>
+                <div style="color:#50C9C3;">${app.resume || app.resumeFile}</div>
+              </div>
+              ` : ''}
+              
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-top:16px; border-top:1px solid var(--glass-border); color:var(--muted); font-size:0.85rem;">
+                <div>📅 Applied on ${dateStr} at ${timeStr}</div>
+                <button class="btn secondary" onclick="deleteApplication(${apps.length - 1 - index})" style="padding:8px 16px; font-size:0.85rem;">
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      function searchApplications() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const applications = JSON.parse(localStorage.getItem('job_applications') || '[]');
+        
+        if(!searchTerm) {
+          displayApplications(applications);
+          return;
+        }
+        
+        const filtered = applications.filter(app => {
+          const jobTitle = (app.jobTitle || app.jobRole || '').toLowerCase();
+          const company = (app.company || '').toLowerCase();
+          const qualification = (app.qualification || '').toLowerCase();
+          const name = (app.name || app.fullName || '').toLowerCase();
+          const skills = (app.skills || '').toLowerCase();
+          
+          return jobTitle.includes(searchTerm) || 
+                 company.includes(searchTerm) || 
+                 qualification.includes(searchTerm) ||
+                 name.includes(searchTerm) ||
+                 skills.includes(searchTerm);
+        });
+        
+        displayApplications(filtered);
+        document.getElementById('totalApps').textContent = filtered.length;
+      }
+      
+      function deleteApplication(index) {
+        if(!confirm('Are you sure you want to delete this application?')) {
+          return;
+        }
+        
+        const applications = JSON.parse(localStorage.getItem('job_applications') || '[]');
+        applications.splice(applications.length - 1 - index, 1);
+        localStorage.setItem('job_applications', JSON.stringify(applications));
+        
+        loadApplications();
+        
+        // Update notification badge
+        if(window.updateNotifications) {
+          window.updateNotifications();
+        }
+        
+        alert('Application deleted successfully!');
+      }
+      
+      // Load applications on page load
+      loadApplications();
+    </script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign In — AI Career Guidance</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <div class="logo">🤖</div>
+        <span class="brand-title">AI Career Guidance</span>
+      </div>
+      <div class="nav-actions">
+        <button class="themeToggle btn ghost">Toggle Theme</button>
+        <a class="btn" href="signup.html">Sign Up</a>
+      </div>
+    </nav>
+
+    <main class="container center">
+      <div class="card glass auth-card">
+        <h2>Welcome Back</h2>
+        <p class="muted">Sign in to continue your journey</p>
+
+        <form id="signinForm" onsubmit="event.preventDefault(); toDashboard(event)">
+          <label class="label">Email</label>
+          <input id="signinEmail" type="email" placeholder="you@example.com" required />
+
+          <label class="label">Password</label>
+          <input id="signinPassword" type="password" placeholder="••••••••" required />
+
+          <div class="form-actions">
+            <button class="btn primary" type="submit">Sign In</button>
+            <a class="muted small" href="signup.html">Don't have an account? Sign Up</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </div>
+</body>
+</html>

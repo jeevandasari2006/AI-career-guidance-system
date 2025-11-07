@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Available Jobs — AI Career Guidance</title>
+  <link rel="stylesheet" href="../style.css" />
+  <script src="../translations.js"></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="topbar">
+      <div class="brand">
+        <a class="back" href="../dashboard.html">← Back to Dashboard</a>
+      </div>
+      <div class="nav-actions">
+        <a href="../settings.html" class="btn ghost" style="padding:8px 16px;">👤 Profile</a>
+        <a class="btn" href="../dashboard.html">Close</a>
+      </div>
+    </nav>
+
+    <main class="container" style="max-width:1100px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:48px;">
+        <h1 style="font-size:2.5rem; margin-bottom:12px; font-weight:700;">🇮🇳 Available Jobs in India v2.0</h1>
+        <p class="muted" style="font-size:1.1rem;">Browse all job opportunities across different education levels and backgrounds</p>
+      </div>
+
+      <!-- 🟩 After 10th Pass -->
+      <section style="margin-bottom:24px;">
+        <div onclick="toggleSection('jobs10th');" style="color:#50C9C3; cursor:pointer; padding:20px 32px; background:rgba(255,255,255,0.05); border-radius:16px; border:2px solid rgba(80,201,195,0.4); transition:all 0.3s; font-size:1.3rem; font-weight:600; display:flex; align-items:center; justify-content:space-between;" onmouseover="this.style.background='rgba(80,201,195,0.1)'; this.style.borderColor='rgba(80,201,195,0.6)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(80,201,195,0.4)'">
+          <span><span style="margin-right:12px;">🟩</span>After 10th Pass</span>
+          <span style="font-size:1.2rem; transition:transform 0.3s;" id="arrow-jobs10th">▼</span>
+        </div>
+        <div class="cards-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); display:none; margin-top:24px; background:rgba(255,0,0,0.1);" id="jobs10th"></div>
+      </section>
+
+      <!-- 🟨 After 12th Pass -->
+      <section style="margin-bottom:24px;">
+        <div onclick="toggleSection('jobs12th')" style="color:#FFA500; cursor:pointer; padding:20px 32px; background:rgba(255,255,255,0.05); border-radius:16px; border:2px solid rgba(255,165,0,0.4); transition:all 0.3s; font-size:1.3rem; font-weight:600; display:flex; align-items:center; justify-content:space-between;" onmouseover="this.style.background='rgba(255,165,0,0.1)'; this.style.borderColor='rgba(255,165,0,0.6)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,165,0,0.4)'">
+          <span><span style="margin-right:12px;">🟨</span>After 12th Pass</span>
+          <span style="font-size:1.2rem; transition:transform 0.3s;" id="arrow-jobs12th">▼</span>
+        </div>
+        <div class="cards-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); display:none; margin-top:24px;" id="jobs12th"></div>
+      </section>
+
+      <!-- 🟦 After ITI/Diploma -->
+      <section style="margin-bottom:24px;">
+        <div onclick="toggleSection('jobsITI')" style="color:#7a7aff; cursor:pointer; padding:20px 32px; background:rgba(255,255,255,0.05); border-radius:16px; border:2px solid rgba(122,122,255,0.4); transition:all 0.3s; font-size:1.3rem; font-weight:600; display:flex; align-items:center; justify-content:space-between;" onmouseover="this.style.background='rgba(122,122,255,0.1)'; this.style.borderColor='rgba(122,122,255,0.6)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(122,122,255,0.4)'">
+          <span><span style="margin-right:12px;">🟦</span>After ITI / Diploma</span>
+          <span style="font-size:1.2rem; transition:transform 0.3s;" id="arrow-jobsITI">▼</span>
+        </div>
+        <div class="cards-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); display:none; margin-top:24px;" id="jobsITI"></div>
+      </section>
+
+      <!-- 🟪 After Graduation -->
+      <section style="margin-bottom:24px;">
+        <div onclick="toggleSection('jobsGrad')" style="color:#ff6b6b; cursor:pointer; padding:20px 32px; background:rgba(255,255,255,0.05); border-radius:16px; border:2px solid rgba(255,107,107,0.4); transition:all 0.3s; font-size:1.3rem; font-weight:600; display:flex; align-items:center; justify-content:space-between;" onmouseover="this.style.background='rgba(255,107,107,0.1)'; this.style.borderColor='rgba(255,107,107,0.6)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,107,107,0.4)'">
+          <span><span style="margin-right:12px;">🟪</span>After Graduation (BA / BCom / BSc / BBA)</span>
+          <span style="font-size:1.2rem; transition:transform 0.3s;" id="arrow-jobsGrad">▼</span>
+        </div>
+        <div class="cards-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); display:none; margin-top:24px;" id="jobsGrad"></div>
+      </section>
+
+      <!-- 🟥 After Professional Degrees -->
+      <section style="margin-bottom:24px;">
+        <div onclick="toggleSection('jobsPro')" style="color:#ff8c42; cursor:pointer; padding:20px 32px; background:rgba(255,255,255,0.05); border-radius:16px; border:2px solid rgba(255,140,66,0.4); transition:all 0.3s; font-size:1.3rem; font-weight:600; display:flex; align-items:center; justify-content:space-between;" onmouseover="this.style.background='rgba(255,140,66,0.1)'; this.style.borderColor='rgba(255,140,66,0.6)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,140,66,0.4)'">
+          <span><span style="margin-right:12px;">🟥</span>After Professional Degrees (BTech / MBA / MBBS / CA)</span>
+          <span style="font-size:1.2rem; transition:transform 0.3s;" id="arrow-jobsPro">▼</span>
+        </div>
+        <div class="cards-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); display:none; margin-top:24px;" id="jobsPro"></div>
+      </section>
+
+      <!-- ⚪ Creative & Freelance -->
+      <section style="margin-bottom:48px;">
+        <div onclick="toggleSection('jobsCreative')" style="color:#b9b1c9; cursor:pointer; padding:20px 32px; background:rgba(255,255,255,0.05); border-radius:16px; border:2px solid rgba(185,177,201,0.4); transition:all 0.3s; font-size:1.3rem; font-weight:600; display:flex; align-items:center; justify-content:space-between;" onmouseover="this.style.background='rgba(185,177,201,0.1)'; this.style.borderColor='rgba(185,177,201,0.6)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(185,177,201,0.4)'">
+          <span><span style="margin-right:12px;">⚪</span>Creative & Freelance Roles (Open for All)</span>
+          <span style="font-size:1.2rem; transition:transform 0.3s;" id="arrow-jobsCreative">▼</span>
+        </div>
+        <div class="cards-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); display:none; margin-top:24px;" id="jobsCreative"></div>
+      </section>
+    </main>
+
+    <!-- Job Application Modal -->
+    <div id="jobApplicationModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Apply for Job</h2>
+          <button class="modal-close" onclick="closeJobModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div id="jobInfo" style="background:rgba(80,201,195,0.1); padding:16px; border-radius:10px; margin-bottom:20px; border:1px solid rgba(80,201,195,0.3);">
+            <div style="font-weight:600; color:var(--accent); margin-bottom:4px;" id="modalJobTitle"></div>
+            <div style="color:var(--muted); font-size:0.9rem;" id="modalJobSalary"></div>
+          </div>
+          <form id="jobApplicationForm" onsubmit="event.preventDefault(); submitJobApplication()">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="appFullName" placeholder="Enter your full name" required />
+            </div>
+            
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="appEmail" placeholder="your.email@example.com" required />
+            </div>
+            
+            <div class="form-group">
+              <label>Qualification *</label>
+              <select id="appQualification" required>
+                <option value="">Select your qualification</option>
+                <option>10th Pass</option>
+                <option>12th Pass</option>
+                <option>ITI</option>
+                <option>Diploma</option>
+                <option>Bachelor's Degree</option>
+                <option>Master's Degree</option>
+                <option>Professional Degree (BTech/MBA/MBBS/CA)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Preferred Job Role *</label>
+              <input type="text" id="appJobRole" placeholder="e.g., Software Developer" required />
+            </div>
+            
+            <div class="form-group">
+              <label>Upload Resume *</label>
+              <div class="file-upload-wrapper">
+                <input type="file" id="appResume" class="file-upload-input" accept=".pdf,.doc,.docx" required onchange="updateResumeFileName(this)" />
+                <label for="appResume" class="file-upload-label">
+                  📄 Click to upload resume (PDF, DOC, DOCX)
+                </label>
+                <div class="file-name" id="resumeFileName"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn secondary" onclick="closeJobModal()">Cancel</button>
+          <button class="btn apply-btn" onclick="submitJobApplication()">Submit Application</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+      console.log('=== JOBS PAGE SCRIPT STARTED ===');
+      console.log('Page loaded at:', new Date().toLocaleTimeString());
+      
+      // All jobs data
+      const allJobs = {
+        '10th': [
+          {title: 'Delivery Partner', salary: '₹12,000 – ₹20,000', desc: 'Deliver food, groceries, or parcels to customers using bike/scooter. Flexible hours and location-based delivery jobs.'},
+          {title: 'Office Assistant', salary: '₹10,000 – ₹18,000', desc: 'Maintain files, assist office staff, handle photocopying, emails, and errands.'},
+          {title: 'Helper / Cleaner', salary: '₹9,000 – ₹15,000', desc: 'Cleaning, organizing materials, and supporting day-to-day office or site maintenance.'},
+          {title: 'Security Guard', salary: '₹10,000 – ₹18,000', desc: 'Protect premises, monitor CCTV, and manage entry points in offices or apartments.'},
+          {title: 'Warehouse Worker', salary: '₹12,000 – ₹20,000', desc: 'Sorting, packing, loading, and unloading goods in warehouses.'},
+          {title: 'Store Keeper', salary: '₹15,000 – ₹22,000', desc: 'Maintain inventory records and manage incoming/outgoing goods.'},
+          {title: 'Driver', salary: '₹15,000 – ₹30,000', desc: 'Transport goods or passengers safely. Must hold a valid driving license.'},
+          {title: 'Sales Associate', salary: '₹12,000 – ₹20,000', desc: 'Assist customers in retail stores and manage product sales.'},
+          {title: 'Factory Helper', salary: '₹10,000 – ₹17,000', desc: 'Support machine operators and ensure factory cleanliness.'},
+          {title: 'Field Worker', salary: '₹12,000 – ₹18,000', desc: 'Outdoor work such as surveys, collections, or basic field support.'}
+        ],
+        '12th': [
+          {title: 'Customer Care Executive', salary: '₹15,000 – ₹28,000', desc: 'Handle customer calls, solve queries, and record feedback.'},
+          {title: 'Receptionist', salary: '₹14,000 – ₹25,000', desc: 'Manage front desk, answer calls, and greet clients.'},
+          {title: 'Computer Operator', salary: '₹15,000 – ₹25,000', desc: 'Operate computer systems, maintain records, and handle MS Office tasks.'},
+          {title: 'Data Entry Clerk', salary: '₹12,000 – ₹20,000', desc: 'Enter and manage data into systems accurately.'},
+          {title: 'Sales Executive', salary: '₹15,000 – ₹30,000', desc: 'Promote and sell company products to clients or customers.'},
+          {title: 'Telecaller', salary: '₹12,000 – ₹22,000', desc: 'Make or receive calls to promote services and collect leads.'},
+          {title: 'Cashier', salary: '₹15,000 – ₹25,000', desc: 'Handle cash counters, billing, and customer payments.'},
+          {title: 'Air Ticketing Executive', salary: '₹18,000 – ₹35,000', desc: 'Book flight tickets, assist travelers, and manage travel queries.'},
+          {title: 'Travel Agent', salary: '₹18,000 – ₹30,000', desc: 'Create travel packages, manage bookings, and assist customers.'},
+          {title: 'Police / Army (Constable)', salary: '₹25,000 – ₹40,000', desc: 'Maintain law and order, public safety, and discipline.'}
+        ],
+        'ITI': [
+          {title: 'Electrician', salary: '₹15,000 – ₹30,000', desc: 'Install and maintain electrical systems and equipment.'},
+          {title: 'Fitter', salary: '₹14,000 – ₹28,000', desc: 'Assemble and repair machinery and mechanical parts.'},
+          {title: 'Welder', salary: '₹14,000 – ₹25,000', desc: 'Join metal parts using welding equipment.'},
+          {title: 'Plumber', salary: '₹15,000 – ₹25,000', desc: 'Install and repair water supply and drainage systems.'},
+          {title: 'Mechanic (Auto / AC / Diesel)', salary: '₹18,000 – ₹30,000', desc: 'Diagnose and repair vehicles or machinery.'},
+          {title: 'Technician (Electrical / Mechanical)', salary: '₹18,000 – ₹35,000', desc: 'Maintain and repair technical equipment and systems.'},
+          {title: 'Machine Operator', salary: '₹15,000 – ₹30,000', desc: 'Operate and monitor industrial machines.'},
+          {title: 'Quality Inspector', salary: '₹18,000 – ₹35,000', desc: 'Check product quality and ensure standards.'},
+          {title: 'Draftsman', salary: '₹20,000 – ₹40,000', desc: 'Prepare technical drawings using CAD software.'},
+          {title: 'Site Supervisor', salary: '₹18,000 – ₹35,000', desc: 'Oversee on-site construction and labor activities.'}
+        ],
+        'Grad': [
+          {title: 'Accountant', salary: '₹20,000 – ₹40,000', desc: 'Manage company accounts, GST, and daily transactions.'},
+          {title: 'HR Executive', salary: '₹22,000 – ₹45,000', desc: 'Handle recruitment, payroll, and employee relations.'},
+          {title: 'Marketing Executive', salary: '₹25,000 – ₹50,000', desc: 'Execute marketing campaigns and analyze results.'},
+          {title: 'Business Development Associate', salary: '₹25,000 – ₹60,000', desc: 'Find business leads and convert clients.'},
+          {title: 'Customer Relationship Manager', salary: '₹25,000 – ₹50,000', desc: 'Maintain long-term relationships with clients.'},
+          {title: 'Data Analyst', salary: '₹30,000 – ₹60,000', desc: 'Analyze business data and prepare reports.'},
+          {title: 'Graphic Designer', salary: '₹25,000 – ₹50,000', desc: 'Design visual content using tools like Photoshop or Canva.'},
+          {title: 'Content Writer', salary: '₹20,000 – ₹45,000', desc: 'Write blogs, articles, and marketing content.'},
+          {title: 'Social Media Manager', salary: '₹25,000 – ₹60,000', desc: 'Manage brand presence on Instagram, LinkedIn, etc.'},
+          {title: 'Government Clerk / Assistant', salary: '₹30,000 – ₹45,000', desc: 'Manage records and paperwork in government offices.'}
+        ],
+        'Pro': [
+          {title: 'Software Developer', salary: '₹40,000 – ₹1,00,000+', desc: 'Develop and maintain software applications.'},
+          {title: 'Web / App Developer', salary: '₹35,000 – ₹90,000', desc: 'Build and update websites and mobile applications.'},
+          {title: 'Data Scientist', salary: '₹50,000 – ₹1,50,000+', desc: 'Analyze data using AI/ML tools for business insights.'},
+          {title: 'Cloud Engineer', salary: '₹45,000 – ₹1,20,000', desc: 'Manage cloud systems like AWS, Azure, or GCP.'},
+          {title: 'Cybersecurity Analyst', salary: '₹40,000 – ₹1,10,000', desc: 'Protect systems from security breaches and malware.'},
+          {title: 'Mechanical / Civil / Electrical Engineer', salary: '₹30,000 – ₹80,000', desc: 'Design, build, and manage engineering projects.'},
+          {title: 'Architect', salary: '₹40,000 – ₹90,000', desc: 'Design residential and commercial building structures.'},
+          {title: 'Doctor', salary: '₹60,000 – ₹2,00,000+', desc: 'Provide medical diagnosis and treatment.'},
+          {title: 'Chartered Accountant', salary: '₹50,000 – ₹1,50,000+', desc: 'Manage auditing, taxation, and financial records.'},
+          {title: 'Product / Project Manager', salary: '₹60,000 – ₹2,00,000+', desc: 'Plan, execute, and manage product or project development.'}
+        ],
+        'Creative': [
+          {title: 'Video Editor', salary: '₹20,000 – ₹60,000', desc: 'Edit and produce videos for social media or films.'},
+          {title: 'Photographer', salary: '₹15,000 – ₹50,000', desc: 'Capture and edit professional photos.'},
+          {title: 'Animator', salary: '₹25,000 – ₹70,000', desc: 'Create animated graphics and motion visuals.'},
+          {title: 'Game Designer', salary: '₹30,000 – ₹90,000', desc: 'Design gameplay, levels, and game art.'},
+          {title: 'Fashion Designer', salary: '₹25,000 – ₹70,000', desc: 'Create and design apparel and accessories.'},
+          {title: 'Interior Designer', salary: '₹30,000 – ₹80,000', desc: 'Design and decorate residential and commercial interiors.'},
+          {title: 'Blogger / Influencer', salary: '₹15,000 – ₹1,00,000+', desc: 'Create online content and earn through brand deals.'},
+          {title: 'YouTuber', salary: '₹10,000 – ₹1,00,000+', desc: 'Create and upload engaging video content.'},
+          {title: 'Music Producer', salary: '₹25,000 – ₹80,000', desc: 'Compose, record, and mix songs or soundtracks.'},
+          {title: 'Freelancer (Any Field)', salary: '₹15,000 – ₹1,00,000+', desc: 'Offer skills online such as writing, design, coding, etc.'}
+        ]
+      };
+
+      // Render jobs
+      function renderJobs(jobs, containerId) {
+        console.log('Rendering jobs for:', containerId, 'Count:', jobs.length);
+        const container = document.getElementById(containerId);
+        if(!container) {
+          console.error('Container not found:', containerId);
+          return;
+        }
+        container.innerHTML = jobs.map((job, index) => {
+          console.log(`Job ${index + 1}:`, job.title);
+          return `
+          <div class="card glass" style="padding:20px;">
+            <h3 style="margin-bottom:8px; color:var(--accent);">${job.title}</h3>
+            <div style="color:#50C9C3; font-weight:600; margin-bottom:12px; font-size:0.95rem;">${job.salary}</div>
+            <p class="muted" style="font-size:0.9rem; line-height:1.6; margin-bottom:16px;">${job.desc}</p>
+            <button class="btn apply-btn" onclick="openJobModal('${job.title}', '${job.salary}')" style="width:100%;">Apply Now</button>
+          </div>
+        `}).join('');
+        console.log('Rendered HTML length:', container.innerHTML.length);
+      }
+
+      // Load all jobs
+      console.log('Loading jobs...');
+      renderJobs(allJobs['10th'], 'jobs10th');
+      renderJobs(allJobs['12th'], 'jobs12th');
+      renderJobs(allJobs['ITI'], 'jobsITI');
+      renderJobs(allJobs['Grad'], 'jobsGrad');
+      renderJobs(allJobs['Pro'], 'jobsPro');
+      renderJobs(allJobs['Creative'], 'jobsCreative');
+      console.log('Jobs loaded successfully');
+
+      // Toggle section visibility
+      window.toggleSection = function(sectionId) {
+        console.log('=== TOGGLE CALLED ===');
+        console.log('Section ID:', sectionId);
+        const section = document.getElementById(sectionId);
+        const arrow = document.getElementById('arrow-' + sectionId);
+        
+        if(!section) {
+          console.error('ERROR: Section not found:', sectionId);
+          alert('Section not found: ' + sectionId);
+          return;
+        }
+        
+        console.log('Section found!');
+        console.log('Current display:', section.style.display);
+        console.log('Section has children:', section.children.length);
+        console.log('First 200 chars of innerHTML:', section.innerHTML.substring(0, 200));
+        
+        if(section.style.display === 'none' || section.style.display === '') {
+          console.log('OPENING SECTION...');
+          section.style.display = 'grid';
+          section.style.visibility = 'visible';
+          section.style.opacity = '1';
+          console.log('New display:', section.style.display);
+          if(arrow) {
+            arrow.textContent = '▲';
+          }
+          alert('Section should be visible now. Can you see jobs?');
+        } else {
+          console.log('CLOSING SECTION...');
+          section.style.display = 'none';
+          if(arrow) {
+            arrow.textContent = '▼';
+          }
+        }
+      };
+
+      let currentJobTitle = '';
+      let currentJobSalary = '';
+
+      function openJobModal(title, salary) {
+        currentJobTitle = title;
+        currentJobSalary = salary;
+        document.getElementById('modalJobTitle').textContent = title;
+        document.getElementById('modalJobSalary').textContent = salary;
+        document.getElementById('appJobRole').value = title;
+        document.getElementById('jobApplicationModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeJobModal() {
+        document.getElementById('jobApplicationModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+        document.getElementById('jobApplicationForm').reset();
+        document.getElementById('resumeFileName').textContent = '';
+      }
+
+      function updateResumeFileName(input) {
+        const fileName = input.files[0]?.name || '';
+        document.getElementById('resumeFileName').textContent = fileName ? `Selected: ${fileName}` : '';
+      }
+
+      function submitJobApplication() {
+        const form = document.getElementById('jobApplicationForm');
+        if(!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const application = {
+          jobTitle: currentJobTitle,
+          salary: currentJobSalary,
+          fullName: document.getElementById('appFullName').value,
+          email: document.getElementById('appEmail').value,
+          qualification: document.getElementById('appQualification').value,
+          jobRole: document.getElementById('appJobRole').value,
+          resume: document.getElementById('appResume').files[0]?.name || '',
+          appliedDate: new Date().toISOString()
+        };
+
+        // Save to localStorage
+        const applications = JSON.parse(localStorage.getItem('job_applications') || '[]');
+        applications.push(application);
+        localStorage.setItem('job_applications', JSON.stringify(applications));
+
+        // Close modal
+        closeJobModal();
+
+        // Show success message
+        const successMsg = document.createElement('div');
+        successMsg.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: linear-gradient(135deg, #50C9C3 0%, #3ab5af 100%);
+          color: white;
+          padding: 32px 48px;
+          border-radius: 16px;
+          box-shadow: 0 12px 40px rgba(80, 201, 195, 0.5);
+          z-index: 10001;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 600;
+          animation: fadeIn 0.3s ease-out;
+        `;
+        successMsg.innerHTML = `
+          <div style="font-size:48px; margin-bottom:16px;">✅</div>
+          <div>Your job application has been submitted successfully!</div>
+          <div style="margin-top:12px; font-size:14px; opacity:0.9;">We'll review your application and get back to you soon.</div>
+        `;
+        document.body.appendChild(successMsg);
+
+        setTimeout(() => {
+          successMsg.style.animation = 'fadeOut 0.3s ease-out';
+          setTimeout(() => successMsg.remove(), 300);
+        }, 3000);
+
+        // Update notification badge
+        if(window.updateNotifications) {
+          window.updateNotifications();
+        }
+      }
+
+      // Close modal when clicking overlay
+      document.addEventListener('click', (event) => {
+        if(event.target.id === 'jobApplicationModal') {
+          closeJobModal();
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>
